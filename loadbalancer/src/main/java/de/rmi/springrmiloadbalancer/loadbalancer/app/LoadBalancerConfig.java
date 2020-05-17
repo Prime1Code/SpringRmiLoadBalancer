@@ -38,7 +38,6 @@ public class LoadBalancerConfig {
         exporter.setServiceName(LoadBalancer.class.getSimpleName());
         exporter.setRegistryPort(PORT_LOADBALANCER);
         exporter.setServicePort(PORT_LOADBALANCER);
-        //exporter.setRegistryHost("0.0.0.0");
         return exporter;
     }
 }

@@ -20,7 +20,7 @@ import java.util.Random;
 public class ServerConfig {
 
     @Value("${server.port:1100}")
-    private int serverPort; // currently not used
+    private int serverPort;
     public static final int RANDOM_SERVER_PORT = new Random().nextInt(2000);
 
     @Value("${load.balancer.ip:localhost}")

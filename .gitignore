@@ -1,6 +1,8 @@
 **/HELP.md
 **/target/
 **/.mvn/
+**/*.bat
+*.bat
 
 ### STS ###
 .apt_generated

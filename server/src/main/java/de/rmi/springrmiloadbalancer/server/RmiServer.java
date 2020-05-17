@@ -25,6 +25,9 @@ public class RmiServer {
 	@Autowired
 	LoadBalancer loadBalancer;
 
+	@Autowired
+	ServerConfig config;
+
 	public static void main(String[] args) {
 		SpringApplication.run(RmiServer.class, args);
 	}
@@ -39,7 +42,12 @@ public class RmiServer {
 		try {
 			final String url = InetAddress.getLocalHost().getHostAddress();
 			serverConfig.put("URL", url);
-			serverConfig.put("PORT", Integer.toString(ServerConfig.RANDOM_SERVER_PORT));
+			if (config.isRandomPort()) {
+				serverConfig.put("PORT", Integer.toString(ServerConfig.RANDOM_SERVER_PORT));
+			}
+			else {
+				serverConfig.put("PORT", Integer.toString(config.getServerPort()));
+			}
 			loadBalancer.registerServer(serverConfig);
 		} catch (UnknownHostException e) {
 			log.debug(e.getMessage(), e);

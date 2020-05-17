@@ -20,7 +20,7 @@ import java.util.Random;
 public class ServerConfig {
 
     @Value("${server.port:1100}")
-    private int SERVER_PORT; // currently not used
+    private int serverPort; // currently not used
     public static final int RANDOM_SERVER_PORT = new Random().nextInt(2000);
 
     @Value("${load.balancer.ip:localhost}")
@@ -28,6 +28,9 @@ public class ServerConfig {
 
     @Value("${load.balancer.port:1099}")
     private int LOAD_BALANCER_PORT;
+
+    @Value("${use.random.port:false}")
+    private boolean useRandomPort;
 
     /**
      * Implementation of HelloWorld service interface
@@ -49,7 +52,14 @@ public class ServerConfig {
         exporter.setServiceInterface(HelloWorld.class);
         exporter.setService(helloWorld());
         exporter.setServiceName(HelloWorld.class.getSimpleName());
-        exporter.setRegistryPort(RANDOM_SERVER_PORT);
+        if (useRandomPort) {
+            exporter.setRegistryPort(RANDOM_SERVER_PORT);
+            exporter.setServicePort(RANDOM_SERVER_PORT);
+        }
+        else {
+            exporter.setRegistryPort(serverPort);
+            exporter.setServicePort(serverPort);
+        }
         return exporter;
     }
 
@@ -70,5 +80,21 @@ public class ServerConfig {
         factory.setServiceUrl(serviceUrl);
         factory.setServiceInterface(LoadBalancer.class);
         return factory;
+    }
+
+    /**
+     * Is server using a random port?
+     * @return useRandomPort
+     */
+    public boolean isRandomPort() {
+        return useRandomPort;
+    }
+
+    /**
+     * Returns the server port
+     * @return serverPort
+     */
+    public int getServerPort() {
+        return serverPort;
     }
 }
